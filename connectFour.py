@@ -1,5 +1,8 @@
 from random import choice as randomPick
 
+class InvalidMoveException:
+    pass
+
 class GameBoard:
     '''
     This class is used to represent the game of connect four.
@@ -67,6 +70,9 @@ class GameBoard:
 
     ## Class Methods
 
+    def clearBoard(self):
+        self.board = self._createBoard()
+
     def switchPlayer(self):
         if (self.turn == "R"):
             self.turn = "Y"
@@ -98,3 +104,29 @@ class GameBoard:
         Checks the board to see if there is any winner.
         '''
         pass
+
+    ## Overloaded Class Methods
+    def __eq__(self,other):
+        '''
+        Two boards are considered equal if they have the
+        same pieces in the same place. The current player
+        is irrelevant.
+        '''
+        if isinstance(other, self.__class__):
+            return self.board == other.board
+        return NotImplemented
+
+    def __ne__(self,other):
+        if isinstance(other,self.__class__):
+            return not self.__eq__(other)
+        return NotImplemented
+
+def main():
+    board = GameBoard();
+    print(board)
+
+    print("\nTesting\n")
+    testHeader = "\n" + " ".join([str(i+1) for i in range(board.columns)])
+    testString = (" ".join(["-" for i in range(board.columns)]) + "\n") * board.rows
+    print(testHeader + "\n" + testString)
+main()
