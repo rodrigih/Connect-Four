@@ -106,6 +106,9 @@ class GameBoard:
         pass
 
     ## Overloaded Class Methods
+    def __getitem__(self,key):
+        return self.board[key]
+
     def __eq__(self,other):
         '''
         Two boards are considered equal if they have the
@@ -123,10 +126,8 @@ class GameBoard:
 
 def main():
     board = GameBoard();
+    board.dropPiece(4)
     print(board)
+    print(board[4][5])
 
-    print("\nTesting\n")
-    testHeader = "\n" + " ".join([str(i+1) for i in range(board.columns)])
-    testString = (" ".join(["-" for i in range(board.columns)]) + "\n") * board.rows
-    print(testHeader + "\n" + testString)
 main()

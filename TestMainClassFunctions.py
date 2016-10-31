@@ -35,6 +35,9 @@ class TestMainClassFunctions(unittest.TestCase):
         newBoard = CF.GameBoard()
         self.Board.clearBoard();
         self.assertEqual(newBoard,self.Board)
+
+    def test_get_item_overloaded_function(self):
+        self.assertEqual(self.Board[0],self.Board.board[0])
         
 
 if __name__ == '__main__':
