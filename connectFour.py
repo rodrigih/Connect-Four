@@ -1,7 +1,8 @@
 from random import choice as randomPick
 
-class InvalidMoveException:
-    pass
+class InvalidMoveError(Exception):
+    def __init__(self,errMes=""):
+        Exception.__init__(self,errMes)
 
 class GameBoard:
     '''
@@ -35,20 +36,33 @@ class GameBoard:
     def _createHeader(self):
         return " ".join([str(i+1) for i in range(self.columns)])
 
-    def _findEmptySlot(self,column):
+    def _checkColumn(self,col,checkFull=False):
+        '''
+        Checks if a column is either out of bounds or empty (if move was to pop)
+        '''
+        if(col < 0 or col >= self.columns):
+            raise InvalidMoveError("Column '{}' out of bounds".format(col))
+
+        if(checkFull):
+            if(self.board[col][-1] == "-"):
+                raise InvalidMoveError("Column '{}' is empty. Cannot 'pop' column".format(col))
+
+
+    def _findEmptySlot(self,col):
         '''
         Given a column, gives the lowest empty slot
         '''
+
         index = 0
 
-        for slot in self.board[column]:
+        for slot in self.board[col]:
             if(slot != '-'):
                 break
             index += 1
 
         # Column is filled, so raise error
         if(index == 0):
-            raise Exception
+            raise InvalidMoveError("Column '{}' is filled".format(col))
 
         # index is first filled slot, so return index minus 1
         return index - 1
@@ -86,6 +100,8 @@ class GameBoard:
         '''
         Drops a piece at the specified column
         '''
+
+        self._checkColumn(column)
         row = self._findEmptySlot(column)
         self.board[column][row] = self.turn
         # self.checkWinner() # <- add when implemented
@@ -95,6 +111,7 @@ class GameBoard:
         '''
         Pops the bottom-most piece of the specified column
         '''
+        self._checkColumn(column,True)
         self.board[column] = ['-'] + self.board[column][:-1]
         # self.checkWinner # <- add when implemented
         self.switchPlayer()
@@ -123,11 +140,3 @@ class GameBoard:
         if isinstance(other,self.__class__):
             return not self.__eq__(other)
         return NotImplemented
-
-def main():
-    board = GameBoard();
-    board.dropPiece(4)
-    print(board)
-    print(board[4][5])
-
-main()
