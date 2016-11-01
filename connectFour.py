@@ -15,6 +15,8 @@ class GameBoard:
         turn: the player of whom the current turn belongs to
         header: the string numbering the columns. Used when printing the board
                 onto the console
+        winner: states the winner of the game. If game is not yet over, the 
+                vale is 'None'
     '''
 
     def __init__(self):
@@ -23,6 +25,7 @@ class GameBoard:
         self.board = self._createBoard()
         self.turn = randomPick(["R","Y"])
         self.header = self._createHeader()
+        self.winner = None
 
     def __str__(self):
         s = "\n".join([" ".join([column[i] for column in self.board]) for i in range(self.rows)])
@@ -96,7 +99,7 @@ class GameBoard:
     def getCurrentPlayer(self):
         return self.turn
 
-    def dropPiece(self,column):
+    def drop(self,column):
         '''
         Drops a piece at the specified column
         '''
@@ -107,7 +110,7 @@ class GameBoard:
         # self.checkWinner() # <- add when implemented
         self.switchPlayer()
 
-    def popColumn(self,column):
+    def pop(self,column):
         '''
         Pops the bottom-most piece of the specified column
         '''

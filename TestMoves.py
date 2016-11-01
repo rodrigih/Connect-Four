@@ -19,43 +19,43 @@ class TestMovesMethods(unittest.TestCase):
 
     def test_dropping_piece_in_each_column(self):
         for i in range(self.Board.columns):
-            self.Board.dropPiece(i)
+            self.Board.drop(i)
             self.assertNotEqual(self.Board[i][self.Board.rows-1],"-")
 
     def test_dropping_piece_until_column_full(self):
         rows = self.Board.rows - 1
         for i in range(self.Board.rows):
-            self.Board.dropPiece(0)
+            self.Board.drop(0)
             self.assertNotEqual(self.Board[0][rows-i],"-")
 
     def test_dropping_piece_in_full_column(self):
         for i in range(self.Board.rows):
-            self.Board.dropPiece(0)
+            self.Board.drop(0)
         with self.assertRaises(CF.InvalidMoveError):
-            self.Board.dropPiece(0)
+            self.Board.drop(0)
 
     def test_dropping_piece_in_out_of_range_column(self):
         with self.assertRaises(CF.InvalidMoveError):
-            self.Board.dropPiece(-1)
+            self.Board.drop(-1)
 
         with self.assertRaises(CF.InvalidMoveError):
-            self.Board.dropPiece(self.Board.rows+1)
+            self.Board.drop(self.Board.rows+1)
 
     def test_popping_column(self):
-        self.Board.dropPiece(0)
+        self.Board.drop(0)
         self.assertNotEqual(self.Board[0][-1],"-")
-        self.Board.popColumn(0)
+        self.Board.pop(0)
         self.assertEqual(self.Board[0][-1],"-")
 
     def test_popping__empty_column(self):
         with self.assertRaises(CF.InvalidMoveError):
-            self.Board.popColumn(0)
+            self.Board.pop(0)
 
     def test_popping_out_of_range_column(self):
         with self.assertRaises(CF.InvalidMoveError):
-            self.Board.popColumn(-1)
+            self.Board.pop(-1)
         with self.assertRaises(CF.InvalidMoveError):
-            self.Board.popColumn(self.Board.rows+1)
+            self.Board.pop(self.Board.rows+1)
 
 if __name__ == '__main__':
     unittest.main()
